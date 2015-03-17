@@ -1,0 +1,92 @@
+{
+    "fathers": [
+        {
+            "id": 0,
+            "married": false,
+            "name": "Edward Walker",
+            "sons": null,
+            "daughters": [
+                {
+                    "age": 16,
+                    "name": "Susan"
+                },
+                {
+                    "age": 6,
+                    "name": "Donna"
+                }
+            ]
+        },
+        {
+            "id": 1,
+            "married": true,
+            "name": "Edward Williams",
+            "sons": null,
+            "daughters": [
+                {
+                    "age": 5,
+                    "name": "Melissa"
+                }
+            ]
+        },
+        {
+            "id": 2,
+            "married": true,
+            "name": "Scott Williams",
+            "sons": null,
+            "daughters": [
+                {
+                    "age": 8,
+                    "name": "Karen"
+                }
+            ]
+        },
+        {
+            "id": 3,
+            "married": true,
+            "name": "Michael Davis",
+            "sons": null,
+            "daughters": [
+                {
+                    "age": 30,
+                    "name": "Jessica"
+                },
+                {
+                    "age": 11,
+                    "name": "Nancy"
+                }
+            ]
+        },
+        {
+            "id": 4,
+            "married": false,
+            "name": "David Thomas",
+            "sons": null,
+            "daughters": [
+            ]
+        },
+        {
+            "id": 5,
+            "married": true,
+            "name": "Frank Martinez",
+            "sons": null,
+            "daughters": [
+                {
+                    "age": 11,
+                    "name": "Brenda"
+                },
+                {
+                    "age": 18,
+                    "name": "Susan"
+                }
+            ]
+        },
+        {
+            "id": 6,
+            "married": true,
+            "name": "William Walker",
+            "sons": null,
+            "daughters": [
+            ]
+        }
+    ]
+}
