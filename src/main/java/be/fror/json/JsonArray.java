@@ -15,6 +15,7 @@
  */
 package be.fror.json;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Iterator;
@@ -55,6 +56,13 @@ public final class JsonArray extends JsonElement implements Iterable<JsonElement
   }
 
   @Override
+  void accept(JsonVisitor visitor) {
+    visitor.entering(this);
+    this.forEach(e -> e.accept(visitor));
+    visitor.leaving(this);
+  }
+
+  @Override
   public boolean equals(Object obj) {
     if (obj instanceof JsonArray) {
       JsonArray other = (JsonArray) obj;
@@ -69,8 +77,17 @@ public final class JsonArray extends JsonElement implements Iterable<JsonElement
   }
 
   @Override
-  public String toString() {
-    return delegate.toString();
+  void toJsonString(Appendable appendable) throws IOException {
+    appendable.append("[");
+    Iterator<JsonElement> it = iterator();
+    if (it.hasNext()) {
+      it.next().toJsonString(appendable);
+      while (it.hasNext()) {
+        appendable.append(",");
+        it.next().toJsonString(appendable);
+      }
+    }
+    appendable.append("]");
   }
 
 }

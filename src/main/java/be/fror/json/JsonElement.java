@@ -15,6 +15,8 @@
  */
 package be.fror.json;
 
+import java.io.IOException;
+
 /**
  * @author Olivier Grégoire
  */
@@ -79,4 +81,18 @@ public abstract class JsonElement {
       throw new IllegalStateException();
     }
   }
+
+  abstract void accept(JsonVisitor visitor);
+
+  @Override
+  public final String toString() {
+    StringBuilder sb = new StringBuilder();
+    try {
+      toJsonString(sb);
+    } catch (IOException ignore) {
+    }
+    return sb.toString();
+  }
+
+  abstract void toJsonString(Appendable appendable) throws IOException;
 }

@@ -15,7 +15,9 @@
  */
 package be.fror.json;
 
+import java.io.IOException;
 import java.util.Collections;
+import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.Objects;
@@ -58,6 +60,13 @@ public final class JsonObject extends JsonElement {
   }
 
   @Override
+  void accept(JsonVisitor visitor) {
+    visitor.entering(this);
+    entries().forEach(e -> e.getValue().accept(visitor));
+    visitor.leaving(this);
+  }
+
+  @Override
   public boolean equals(Object obj) {
     if (obj instanceof JsonObject) {
       JsonObject other = (JsonObject) obj;
@@ -72,8 +81,20 @@ public final class JsonObject extends JsonElement {
   }
 
   @Override
-  public String toString() {
-    return delegate.toString();
+  void toJsonString(Appendable appendable) throws IOException {
+    appendable.append("{");
+    Iterator<Map.Entry<String, JsonElement>> it = entries().iterator();
+    if (it.hasNext()) {
+      Map.Entry<String, JsonElement> e = it.next();
+      appendable.append('"').append(e.getKey()).append("\":");
+      e.getValue().toJsonString(appendable);
+      while (it.hasNext()) {
+        e = it.next();
+        appendable.append(",\"").append(e.getKey()).append("\":");
+        e.getValue().toJsonString(appendable);
+      }
+    }
+    appendable.append("}");
   }
 
 }

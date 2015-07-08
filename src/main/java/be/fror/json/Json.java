@@ -17,6 +17,7 @@ package be.fror.json;
 
 import java.io.IOException;
 import java.io.Reader;
+import java.io.Writer;
 import java.math.BigDecimal;
 import java.util.Deque;
 import java.util.LinkedList;
@@ -42,6 +43,20 @@ public final class Json {
     ARRAY_AFTER_VALUE,
     FINISHED,
     ERROR
+  }
+
+  public static void visit(JsonElement element, JsonVisitor visitor) {
+    if (element == null || visitor == null) {
+      throw new NullPointerException();
+    }
+    element.accept(visitor);
+  }
+
+  public static void write(JsonElement element, Writer writer) throws IOException {
+    if (element == null || writer == null) {
+      throw new NullPointerException();
+    }
+    element.toJsonString(writer);
   }
 
   public static JsonElement parse(Reader reader) throws IOException {

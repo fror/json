@@ -15,42 +15,26 @@
  */
 package be.fror.json;
 
-import java.io.IOException;
-import java.util.Objects;
-
 /**
  * @author Olivier Grégoire
  */
-public final class JsonNull extends JsonElement {
+public interface JsonVisitor {
 
-  private static final JsonNull INSTANCE = new JsonNull();
-
-  static JsonNull instance() {
-    return INSTANCE;
+  default public void entering(JsonObject jsonObject) {
   }
 
-  private JsonNull() {
-    super(Type.NULL);
+  default public void leaving(JsonObject jsonObject) {
   }
 
-  @Override
-  void accept(JsonVisitor visitor) {
-    visitor.visit(this);
+  default public void entering(JsonArray jsonArray) {
+  }
+  
+  default public void leaving(JsonArray jsonArray) {
   }
 
-  @Override
-  public boolean equals(Object obj) {
-    return obj instanceof JsonNull;
+  default public void visit(JsonPrimitive jsonPrimitive) {
   }
 
-  @Override
-  public int hashCode() {
-    return Objects.hash(JsonNull.class);
+  default public void visit(JsonNull jsonNull) {
   }
-
-  @Override
-  void toJsonString(Appendable appendable) throws IOException {
-    appendable.append("null");
-  }
-
 }

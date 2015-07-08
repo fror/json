@@ -15,14 +15,15 @@
  */
 package be.fror.json;
 
-import java.io.IOException;
-import java.io.StringReader;
-import java.math.BigDecimal;
-import java.math.BigInteger;
 import static org.hamcrest.Matchers.equalTo;
 import static org.junit.Assert.assertThat;
 import static org.junit.Assert.fail;
+
 import org.junit.Test;
+
+import java.io.IOException;
+import java.io.StringReader;
+import java.math.BigDecimal;
 
 /**
  * @author Olivier Grégoire

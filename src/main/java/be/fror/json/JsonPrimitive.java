@@ -15,6 +15,7 @@
  */
 package be.fror.json;
 
+import java.io.IOException;
 import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.util.Objects;
@@ -121,6 +122,11 @@ public final class JsonPrimitive extends JsonElement {
   }
 
   @Override
+  void accept(JsonVisitor visitor) {
+    visitor.visit(this);
+  }
+
+  @Override
   public boolean equals(Object obj) {
     if (obj instanceof JsonPrimitive) {
       JsonPrimitive other = (JsonPrimitive) obj;
@@ -135,8 +141,12 @@ public final class JsonPrimitive extends JsonElement {
   }
 
   @Override
-  public String toString() {
-    return value.toString();
+  void toJsonString(Appendable appendable) throws IOException {
+    if (value instanceof String) {
+      appendable.append('"').append(String.valueOf(value)).append('"');
+    } else {
+      appendable.append(String.valueOf(value));
+    }
   }
 
 }
