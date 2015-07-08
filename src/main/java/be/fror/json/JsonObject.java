@@ -1,5 +1,5 @@
 /*
- * Copyright 2015 Olivier Grégoire <fror@users.noreply.github.com>.
+ * Copyright 2015 Olivier Grégoire
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -15,11 +15,55 @@
  */
 package be.fror.json;
 
+import java.util.Collections;
 import java.util.LinkedHashMap;
+import java.util.Map;
+import java.util.Objects;
+import java.util.Optional;
+import java.util.Set;
 
 /**
- * @author Olivier Grégoire &lt;https://github.com/fror&gt;
+ * @author Olivier Grégoire
  */
-public class JsonObject extends LinkedHashMap<String, Object> {
-
+public class JsonObject extends JsonElement {
+  
+  private final Map<String, JsonElement> delegate = new LinkedHashMap<>();
+  private final Map<String, JsonElement> unmodifiableView = Collections.unmodifiableMap(delegate);
+  
+  public JsonObject() {
+    super(Type.OBJECT);
+  }
+  
+  public Optional<JsonElement> get(String property) {
+    return Optional.ofNullable(delegate.get(property));
+  }
+  
+  public boolean has(String property) {
+    return delegate.containsKey(property);
+  }
+  
+  void add(String property, JsonElement value) {
+    if (property == null || value == null) {
+      throw new NullPointerException();
+    }
+  }
+  
+  public Set<Map.Entry<String, JsonElement>> entries() {
+    return unmodifiableView.entrySet();
+  }
+  
+  @Override
+  public boolean equals(Object obj) {
+    if (obj instanceof JsonObject) {
+      JsonObject other = (JsonObject) obj;
+      return Objects.equals(delegate, other.delegate);
+    }
+    return false;
+  }
+  
+  @Override
+  public int hashCode() {
+    return Objects.hash(delegate);
+  }
+  
 }

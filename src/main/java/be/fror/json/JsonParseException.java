@@ -1,5 +1,5 @@
 /*
- * Copyright 2015 Olivier Grégoire <fror@users.noreply.github.com>.
+ * Copyright 2015 Olivier Grégoire
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,7 +16,7 @@
 package be.fror.json;
 
 /**
- * @author Olivier Grégoire &lt;https://github.com/fror&gt;
+ * @author Olivier Grégoire
  */
 public class JsonParseException extends RuntimeException {
 

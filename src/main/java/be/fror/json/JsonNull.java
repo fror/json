@@ -15,30 +15,18 @@
  */
 package be.fror.json;
 
-import static java.nio.charset.StandardCharsets.UTF_8;
-
-import org.junit.Test;
-
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.io.Reader;
-
 /**
  * @author Olivier Grégoire
  */
-public class CompleteTest {
+public final class JsonNull extends JsonElement {
 
-  @Test
-  public void testResources() throws IOException {
-    testResource("dummy1.json");
-    testResource("dummy2.json");
+  private static final JsonNull INSTANCE = new JsonNull();
+
+  static JsonNull instance() {
+    return INSTANCE;
   }
 
-  private void testResource(String resourceName) throws IOException {
-    try (InputStream in = CompleteTest.class.getResourceAsStream(resourceName);
-        Reader reader = new InputStreamReader(in, UTF_8)) {
-      Json.parse(reader, JsonCallback.noopCallback());
-    }
+  private JsonNull() {
+    super(Type.NULL);
   }
 }

@@ -1,5 +1,5 @@
 /*
- * Copyright 2015 Olivier Grégoire <fror@users.noreply.github.com>.
+ * Copyright 2015 Olivier Grégoire
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -25,18 +25,18 @@ import static org.junit.Assert.fail;
 import org.junit.Test;
 
 /**
- * @author Olivier Grégoire &lt;https://github.com/fror&gt;
+ * @author Olivier Grégoire
  */
 public class JsonParserTest {
 
   @Test
   public void testValues() {
-    testParse(new BigInteger("1"), "1");
-    testParse(new BigDecimal("1.2"), "1.2");
-    testParse("a", "\"a\"");
-    testParse(true, "true");
-    testParse(false, "false");
-    testParse(null, "null");
+    testParse(JsonPrimitive.wrap(1), "1");
+    testParse(JsonPrimitive.wrap(new BigDecimal("1.2")), "1.2");
+    testParse(JsonPrimitive.wrap("a"), "\"a\"");
+    testParse(JsonPrimitive.wrap(true), "true");
+    testParse(JsonPrimitive.wrap(false), "false");
+    testParse(JsonNull.instance(), "null");
   }
 
   @Test
@@ -48,13 +48,13 @@ public class JsonParserTest {
     }
     {
       array = new JsonArray();
-      array.add("a");
+      array.add(JsonPrimitive.wrap("a"));
       testParse(array, "[\"a\"]");
     }
     {
       array = new JsonArray();
-      array.add("a");
-      array.add("b");
+      array.add(JsonPrimitive.wrap("a"));
+      array.add(JsonPrimitive.wrap("b"));
       testParse(array, "[\"a\",\"b\"]");
     }
   }
@@ -71,25 +71,25 @@ public class JsonParserTest {
     {
       parent = new JsonArray();
       child = new JsonArray();
-      child.add("a");
+      child.add(JsonPrimitive.wrap("a"));
       parent.add(child);
       testParse(parent, "[[\"a\"]]");
     }
     {
       parent = new JsonArray();
       child = new JsonArray();
-      child.add("a");
-      child.add("b");
+      child.add(JsonPrimitive.wrap("a"));
+      child.add(JsonPrimitive.wrap("b"));
       parent.add(child);
       testParse(parent, "[[\"a\",\"b\"]]");
     }
     {
       parent = new JsonArray();
       child = new JsonArray();
-      child.add("a");
+      child.add(JsonPrimitive.wrap("a"));
       parent.add(child);
       child = new JsonArray();
-      child.add("b");
+      child.add(JsonPrimitive.wrap("b"));
       parent.add(child);
       testParse(parent, "[[\"a\"],[\"b\"]]");
     }
@@ -104,13 +104,13 @@ public class JsonParserTest {
     }
     {
       object = new JsonObject();
-      object.put("a", "b");
+      object.add("a", JsonPrimitive.wrap("b"));
       testParse(object, "{\"a\":\"b\"}");
     }
     {
       object = new JsonObject();
-      object.put("a", "b");
-      object.put("c", "d");
+      object.add("a", JsonPrimitive.wrap("b"));
+      object.add("c", JsonPrimitive.wrap("d"));
       testParse(object, "{\"a\":\"b\",\"c\":\"d\"}");
     }
   }
@@ -121,30 +121,30 @@ public class JsonParserTest {
     {
       parent = new JsonObject();
       child = new JsonObject();
-      parent.put("a", child);
+      parent.add("a", child);
       testParse(parent, "{\"a\":{}}");
     }
     {
       parent = new JsonObject();
       child = new JsonObject();
-      parent.put("a", child);
-      child.put("a", "b");
+      parent.add("a", child);
+      child.add("a", JsonPrimitive.wrap("b"));
       testParse(parent, "{\"a\":{\"a\":\"b\"}}");
     }
     {
       parent = new JsonObject();
       child = new JsonObject();
-      parent.put("a", child);
-      child.put("a", "b");
-      child.put("c", "d");
+      parent.add("a", child);
+      child.add("a", JsonPrimitive.wrap("b"));
+      child.add("c", JsonPrimitive.wrap("d"));
       testParse(parent, "{\"a\":{\"a\":\"b\",\"c\":\"d\"}}");
     }
     {
       parent = new JsonObject();
       child = new JsonObject();
-      parent.put("a", child);
+      parent.add("a", child);
       child = new JsonObject();
-      parent.put("b", child);
+      parent.add("b", child);
       testParse(parent, "{\"a\":{},\"b\":{}}");
     }
   }
@@ -154,36 +154,36 @@ public class JsonParserTest {
     String json = "{\"a\":{\"b\":[\"c\",1,23,1.23e45],\"d\":false,\"e\":true},\"f\":[1,2,3,null,{\"g\":[{}]},[1]],\"h\":[]}";
     JsonObject o1 = new JsonObject();
     JsonObject o2 = new JsonObject();
-    o1.put("a", o2);
+    o1.add("a", o2);
     JsonArray a1 = new JsonArray();
-    o2.put("b", a1);
-    a1.add("c");
-    a1.add(BigInteger.ONE);
-    a1.add(BigInteger.valueOf(23));
-    a1.add(new BigDecimal("1.23e45"));
-    o2.put("d", false);
-    o2.put("e", true);
+    o2.add("b", a1);
+    a1.add(JsonPrimitive.wrap("c"));
+    a1.add(JsonPrimitive.wrap(BigInteger.ONE));
+    a1.add(JsonPrimitive.wrap(BigInteger.valueOf(23)));
+    a1.add(JsonPrimitive.wrap(new BigDecimal("1.23e45")));
+    o2.add("d", JsonPrimitive.wrap(false));
+    o2.add("e", JsonPrimitive.wrap(true));
     JsonArray a2 = new JsonArray();
-    o1.put("f", a2);
-    a2.add(BigInteger.valueOf(1));
-    a2.add(BigInteger.valueOf(2));
-    a2.add(BigInteger.valueOf(3));
+    o1.add("f", a2);
+    a2.add(JsonPrimitive.wrap(BigInteger.valueOf(1)));
+    a2.add(JsonPrimitive.wrap(BigInteger.valueOf(2)));
+    a2.add(JsonPrimitive.wrap(BigInteger.valueOf(3)));
     a2.add(null);
     JsonObject o3 = new JsonObject();
     JsonArray a3 = new JsonArray();
-    o3.put("g", a3);
+    o3.add("g", a3);
     a2.add(o3);
     a3.add(new JsonObject());
     JsonArray a4 = new JsonArray();
-    a4.add(BigInteger.ONE);
+    a4.add(JsonPrimitive.wrap(BigInteger.ONE));
     a2.add(a4);
-    o1.put("h", new JsonArray());
+    o1.add("h", new JsonArray());
     testParse(o1, json);
   }
 
-  private void testParse(Object expected, String json) {
+  private void testParse(JsonElement expected, String json) {
     try {
-      Object result = Json.parse(new StringReader(json));
+      JsonElement result = Json.parse(new StringReader(json));
       assertThat(json, result, equalTo(expected));
     } catch (IOException e) {
       throw new RuntimeException(e);

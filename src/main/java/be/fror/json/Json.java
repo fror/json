@@ -1,5 +1,5 @@
 /*
- * Copyright 2015 Olivier Grégoire <fror@users.noreply.github.com>.
+ * Copyright 2015 Olivier Grégoire
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -18,12 +18,11 @@ package be.fror.json;
 import java.io.IOException;
 import java.io.Reader;
 import java.math.BigDecimal;
-import java.math.BigInteger;
 import java.util.Deque;
 import java.util.LinkedList;
 
 /**
- * @author Olivier Grégoire &lt;https://github.com/fror&gt;
+ * @author Olivier Grégoire
  */
 public final class Json {
 
@@ -45,7 +44,7 @@ public final class Json {
     ERROR
   }
 
-  public static Object parse(Reader reader) throws IOException {
+  public static JsonElement parse(Reader reader) throws IOException {
     BasicCallback callback = new BasicCallback();
     parse(reader, callback);
     return callback.getResult();
@@ -293,29 +292,18 @@ public final class Json {
     } while (true);
   }
 
-  private static Object valueOf(JsonToken token) {
+  private static JsonElement valueOf(JsonToken token) {
     switch (token.type) {
       case STRING:
-        return token.text;
+        return JsonPrimitive.wrap(token.text);
       case NUMBER:
-        String s = token.text;
-        for (int i = 0; i < s.length(); i++) {
-          switch (s.charAt(i)) {
-            case '.':
-            case 'E':
-            case 'e':
-              return new BigDecimal(s);
-            default:
-            // continue
-          }
-        }
-        return new BigInteger(s);
+        return JsonPrimitive.wrap(new BigDecimal(token.text));
       case TRUE:
-        return Boolean.TRUE;
+        return JsonPrimitive.wrap(true);
       case FALSE:
-        return Boolean.FALSE;
+        return JsonPrimitive.wrap(false);
       case NULL:
-        return null;
+        return JsonNull.instance();
       default:
         throw new InternalError("Unexpected token to extract value from");
     }

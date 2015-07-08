@@ -1,5 +1,5 @@
 /*
- * Copyright 2015 Olivier Grégoire <fror@users.noreply.github.com>.
+ * Copyright 2015 Olivier Grégoire
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -19,7 +19,7 @@ import java.util.Deque;
 import java.util.LinkedList;
 
 /**
- * @author Olivier Grégoire &lt;https://github.com/fror&gt;
+ * @author Olivier Grégoire
  */
 class BasicCallback implements JsonCallback {
 
@@ -35,7 +35,7 @@ class BasicCallback implements JsonCallback {
     offerContainer(new JsonObject());
   }
 
-  private void offerContainer(Object container) {
+  private void offerContainer(JsonElement container) {
     if (!values.isEmpty()) {
       addToParentContainer(container);
     }
@@ -43,7 +43,7 @@ class BasicCallback implements JsonCallback {
   }
 
   @Override
-  public void value(Object value) {
+  public void value(JsonElement value) {
     if (values.isEmpty()) {
       values.offerFirst(value);
     } else {
@@ -51,11 +51,11 @@ class BasicCallback implements JsonCallback {
     }
   }
 
-  private void addToParentContainer(Object child) {
+  private void addToParentContainer(JsonElement child) {
     Object previous = values.peekFirst();
     if (previous instanceof String) {
       String key = (String) values.pollFirst(); // consume it
-      ((JsonObject) values.peekFirst()).put(key, child);
+      ((JsonObject) values.peekFirst()).add(key, child);
     } else if (previous instanceof JsonArray) {
       ((JsonArray) previous).add(child);
     }
@@ -82,8 +82,8 @@ class BasicCallback implements JsonCallback {
     values.offerFirst(key);
   }
 
-  public Object getResult() {
-    return values.pollFirst();
+  public JsonElement getResult() {
+    return (JsonElement)values.pollFirst();
   }
 
 }
