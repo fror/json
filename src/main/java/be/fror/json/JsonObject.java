@@ -25,33 +25,38 @@ import java.util.Set;
 /**
  * @author Olivier Grégoire
  */
-public class JsonObject extends JsonElement {
-  
+public final class JsonObject extends JsonElement {
+
   private final Map<String, JsonElement> delegate = new LinkedHashMap<>();
   private final Map<String, JsonElement> unmodifiableView = Collections.unmodifiableMap(delegate);
-  
-  public JsonObject() {
+
+  JsonObject() {
     super(Type.OBJECT);
   }
-  
+
+  public int size() {
+    return delegate.size();
+  }
+
   public Optional<JsonElement> get(String property) {
     return Optional.ofNullable(delegate.get(property));
   }
-  
+
   public boolean has(String property) {
     return delegate.containsKey(property);
   }
-  
+
   void add(String property, JsonElement value) {
     if (property == null || value == null) {
       throw new NullPointerException();
     }
+    delegate.put(property, value);
   }
-  
+
   public Set<Map.Entry<String, JsonElement>> entries() {
     return unmodifiableView.entrySet();
   }
-  
+
   @Override
   public boolean equals(Object obj) {
     if (obj instanceof JsonObject) {
@@ -60,10 +65,15 @@ public class JsonObject extends JsonElement {
     }
     return false;
   }
-  
+
   @Override
   public int hashCode() {
     return Objects.hash(delegate);
   }
-  
+
+  @Override
+  public String toString() {
+    return delegate.toString();
+  }
+
 }

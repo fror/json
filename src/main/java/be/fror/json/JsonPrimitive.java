@@ -67,7 +67,7 @@ public final class JsonPrimitive extends JsonElement {
     return value instanceof Boolean;
   }
 
-  public boolean getAsBoolean() {
+  public boolean asBoolean() {
     checkType(isBoolean());
     return (Boolean) value;
   }
@@ -76,7 +76,7 @@ public final class JsonPrimitive extends JsonElement {
     return value instanceof Number;
   }
 
-  public Number getAsNumber() {
+  public Number asNumber() {
     checkType(isNumber());
     return (Number) value;
   }
@@ -85,7 +85,7 @@ public final class JsonPrimitive extends JsonElement {
     return value instanceof String;
   }
 
-  public String getAsString() {
+  public String asString() {
     checkType(isString());
     return (String) value;
   }
@@ -96,27 +96,27 @@ public final class JsonPrimitive extends JsonElement {
     }
   }
 
-  public double getAsDouble() {
-    return getAsNumber().doubleValue();
+  public double asDouble() {
+    return asNumber().doubleValue();
   }
 
-  public float getAsFloat() {
-    return getAsNumber().floatValue();
+  public float asFloat() {
+    return asNumber().floatValue();
   }
 
-  public long getAsLong() {
-    return getAsNumber().longValue();
+  public long asLong() {
+    return asNumber().longValue();
   }
 
-  public int getAsInt() {
-    return getAsNumber().intValue();
+  public int asInt() {
+    return asNumber().intValue();
   }
 
-  public BigDecimal getAsBigDecimal() {
+  public BigDecimal asBigDecimal() {
     return (BigDecimal) value;
   }
 
-  public BigInteger getAsBigInteger() {
+  public BigInteger asBigInteger() {
     return ((BigDecimal) value).toBigInteger();
   }
 
@@ -132,6 +132,11 @@ public final class JsonPrimitive extends JsonElement {
   @Override
   public int hashCode() {
     return Objects.hash(value);
+  }
+
+  @Override
+  public String toString() {
+    return value.toString();
   }
 
 }

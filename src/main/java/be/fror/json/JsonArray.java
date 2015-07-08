@@ -25,17 +25,21 @@ import java.util.Optional;
 /**
  * @author Olivier Grégoire
  */
-public class JsonArray extends JsonElement implements Iterable<JsonElement> {
+public final class JsonArray extends JsonElement implements Iterable<JsonElement> {
 
   private final List<JsonElement> delegate = new ArrayList<>();
   private final List<JsonElement> unmodifiableView = Collections.unmodifiableList(delegate);
 
-  public JsonArray() {
+  JsonArray() {
     super(Type.ARRAY);
   }
 
+  public int size() {
+    return delegate.size();
+  }
+
   public Optional<JsonElement> get(int index) {
-    if (index < delegate.size()) {
+    if (0 <= index && index < delegate.size()) {
       return Optional.of(delegate.get(index));
     }
     return Optional.empty();
@@ -61,6 +65,12 @@ public class JsonArray extends JsonElement implements Iterable<JsonElement> {
 
   @Override
   public int hashCode() {
-    return super.hashCode(); //To change body of generated methods, choose Tools | Templates.
+    return Objects.hash(delegate);
   }
+
+  @Override
+  public String toString() {
+    return delegate.toString();
+  }
+
 }

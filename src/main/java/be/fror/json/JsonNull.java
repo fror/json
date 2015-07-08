@@ -15,6 +15,8 @@
  */
 package be.fror.json;
 
+import java.util.Objects;
+
 /**
  * @author Olivier Grégoire
  */
@@ -28,5 +30,20 @@ public final class JsonNull extends JsonElement {
 
   private JsonNull() {
     super(Type.NULL);
+  }
+
+  @Override
+  public boolean equals(Object obj) {
+    return obj instanceof JsonNull;
+  }
+
+  @Override
+  public int hashCode() {
+    return Objects.hash(JsonNull.class);
+  }
+
+  @Override
+  public String toString() {
+    return "null";
   }
 }

@@ -152,33 +152,33 @@ public class JsonParserTest {
   @Test
   public void testCompleteObject() throws Exception {
     String json = "{\"a\":{\"b\":[\"c\",1,23,1.23e45],\"d\":false,\"e\":true},\"f\":[1,2,3,null,{\"g\":[{}]},[1]],\"h\":[]}";
-    JsonObject o1 = new JsonObject();
-    JsonObject o2 = new JsonObject();
-    o1.add("a", o2);
-    JsonArray a1 = new JsonArray();
-    o2.add("b", a1);
-    a1.add(JsonPrimitive.wrap("c"));
-    a1.add(JsonPrimitive.wrap(BigInteger.ONE));
-    a1.add(JsonPrimitive.wrap(BigInteger.valueOf(23)));
-    a1.add(JsonPrimitive.wrap(new BigDecimal("1.23e45")));
-    o2.add("d", JsonPrimitive.wrap(false));
-    o2.add("e", JsonPrimitive.wrap(true));
-    JsonArray a2 = new JsonArray();
-    o1.add("f", a2);
-    a2.add(JsonPrimitive.wrap(BigInteger.valueOf(1)));
-    a2.add(JsonPrimitive.wrap(BigInteger.valueOf(2)));
-    a2.add(JsonPrimitive.wrap(BigInteger.valueOf(3)));
-    a2.add(null);
+    JsonObject root = new JsonObject();
+    JsonObject a = new JsonObject();
+    root.add("a", a);
+    JsonArray b = new JsonArray();
+    a.add("b", b);
+    b.add(JsonPrimitive.wrap("c"));
+    b.add(JsonPrimitive.wrap(1));
+    b.add(JsonPrimitive.wrap(23));
+    b.add(JsonPrimitive.wrap(new BigDecimal("1.23e45")));
+    a.add("d", JsonPrimitive.wrap(false));
+    a.add("e", JsonPrimitive.wrap(true));
+    JsonArray f = new JsonArray();
+    root.add("f", f);
+    f.add(JsonPrimitive.wrap(1));
+    f.add(JsonPrimitive.wrap(2));
+    f.add(JsonPrimitive.wrap(3));
+    f.add(JsonNull.instance());
     JsonObject o3 = new JsonObject();
-    JsonArray a3 = new JsonArray();
-    o3.add("g", a3);
-    a2.add(o3);
-    a3.add(new JsonObject());
+    JsonArray g = new JsonArray();
+    o3.add("g", g);
+    f.add(o3);
+    g.add(new JsonObject());
     JsonArray a4 = new JsonArray();
-    a4.add(JsonPrimitive.wrap(BigInteger.ONE));
-    a2.add(a4);
-    o1.add("h", new JsonArray());
-    testParse(o1, json);
+    a4.add(JsonPrimitive.wrap(1));
+    f.add(a4);
+    root.add("h", new JsonArray());
+    testParse(root, json);
   }
 
   private void testParse(JsonElement expected, String json) {
