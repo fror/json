@@ -28,29 +28,29 @@ public final class JsonPrimitive extends JsonElement {
   private static final JsonPrimitive TRUE = new JsonPrimitive(true);
   private static final JsonPrimitive FALSE = new JsonPrimitive(false);
 
-  public static JsonPrimitive wrap(boolean value) {
+  static JsonPrimitive wrap(boolean value) {
     return value ? TRUE : FALSE;
   }
 
-  public static JsonPrimitive wrap(String value) {
+  static JsonPrimitive wrap(String value) {
     if (value == null) {
       throw new NullPointerException();
     }
     return new JsonPrimitive(value);
   }
 
-  public static JsonPrimitive wrap(long value) {
+  static JsonPrimitive wrap(long value) {
     return new JsonPrimitive(BigDecimal.valueOf(value));
   }
 
-  public static JsonPrimitive wrap(BigInteger value) {
+  static JsonPrimitive wrap(BigInteger value) {
     if (value == null) {
       throw new NullPointerException();
     }
     return new JsonPrimitive(new BigDecimal(value));
   }
 
-  public static JsonPrimitive wrap(BigDecimal value) {
+  static JsonPrimitive wrap(BigDecimal value) {
     if (value == null) {
       throw new NullPointerException();
     }
